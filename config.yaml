@@ -1,0 +1,12 @@
+app_env: test
+app_name: test_api
+database:
+  host: db
+  port: 5432
+  db: postgres
+  user: postgres
+  password: test
+kafka_topic: data_topic
+kafka_key: data_entry
+first_external_host: http://web1.org
+second_external_host: http://web2.org
