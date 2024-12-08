@@ -6,7 +6,7 @@
 docker compose up
 ```
 
-### После запуска принимает GET и POST запросы по адресу <localhost:3000/data>
+### После запуска принимает GET и POST запросы по адресу <http://localhost:3000/data>
 
 ### [Документация](http://localhost:3000/docs)
 
