@@ -1,8 +1,16 @@
 from dynaconf import Dynaconf
 from pydantic import AnyUrl
 from pydantic_settings import BaseSettings
+from loguru import logger
 
 _settings = Dynaconf(settings_files=["config.yaml"])
+
+
+logger.add('logs/logs.log', level='DEBUG')
+logger.debug('Error')
+logger.info('Information message')
+logger.warning('Warning')
+
 
 _db_dsn = AnyUrl.build(
     scheme="postgresql+asyncpg",

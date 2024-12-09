@@ -1,4 +1,4 @@
-app_env: test
+app_env: dev
 app_name: test_api
 database:
   host: db

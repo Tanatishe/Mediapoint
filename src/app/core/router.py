@@ -1,18 +1,22 @@
-from fastapi import APIRouter, Depends
+from src.app.settings.config import logger
+from fastapi import APIRouter, Depends, HTTPException
 
-from src.app.core.service import post_request, get_request
+from src.app.core.service import post_request, get_request, kafka_send
 from src.app.settings.dto import DataRequest
 
 router = APIRouter(prefix="/data", tags=["data"])
 
 
 @router.post("")
-async def post_data(request: DataRequest):
+async def post_data(request: DataRequest) -> dict:
     try:
-        response = await post_request(request.content)
+        data = request.content
+        response = await post_request(data)
     except Exception as e:
-        return repr(e)
+        logger.error(f"v poste {repr(e)}")
+        raise HTTPException(400, detail="Bad Request")
     else:
+        await kafka_send(data)
         return {
             "id": int(response.all()[0][0]),
             "message": "Data saved and published to Kafka.",
@@ -20,7 +24,7 @@ async def post_data(request: DataRequest):
 
 
 @router.get("")
-async def get_data(entries=Depends(get_request)):
+async def get_data(entries=Depends(get_request)) -> list:
     return [
         {
             "id": entry.id,
